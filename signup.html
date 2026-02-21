@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ExpenseTracker</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-chart-line"></i>
+                ExpenseTracker
+            </a>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-card card">
+            <div class="card-body">
+                <div class="auth-header">
+                    <h1>Create account</h1>
+                    <p>Start tracking your expenses</p>
+                </div>
+
+                <div id="errorAlert" class="alert alert-error" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorMessage"></span>
+                </div>
+
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="password" class="form-control" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" id="signupBtn">
+                        Sign Up
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Already have an account? <a href="login.html">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirm) {
+                document.getElementById('errorMessage').textContent = 'Passwords do not match';
+                document.getElementById('errorAlert').style.display = 'flex';
+                return;
+            }
+            
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            if (users.some(u => u.email === email)) {
+                document.getElementById('errorMessage').textContent = 'Email already exists';
+                document.getElementById('errorAlert').style.display = 'flex';
+                return;
+            }
+            
+            // Create new user with empty expenses
+            const newUser = { 
+                id: Date.now(),
+                name, 
+                email, 
+                password 
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Initialize empty expenses for this user
+            localStorage.setItem(`expenses_${newUser.id}`, JSON.stringify([]));
+            
+            window.location.href = 'login.html?registered=true';
+        });
+    </script>
+</body>
+</html>

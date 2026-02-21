@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ExpenseTracker</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-chart-line"></i>
+                ExpenseTracker
+            </a>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-card card">
+            <div class="card-body">
+                <div class="auth-header">
+                    <h1>Welcome back</h1>
+                    <p>Sign in to your account</p>
+                </div>
+
+                <div id="errorAlert" class="alert alert-error" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorMessage"></span>
+                </div>
+
+                <div id="successAlert" class="alert alert-success" style="display: none;">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="successMessage"></span>
+                </div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" id="loginBtn">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Don't have an account? <a href="signup.html">Sign up</a>
+                </div>
+
+                <div style="text-align: center; margin-top: 1rem;">
+                    <p class="text-sm text-gray">Demo: demo@example.com / password</p>
+                    <button onclick="fillDemo()" class="btn btn-secondary btn-sm mt-4">Use Demo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function fillDemo() {
+            document.getElementById('email').value = 'demo@example.com';
+            document.getElementById('password').value = 'password';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Check demo account
+            if (email === 'demo@example.com' && password === 'password') {
+                // Create demo user if doesn't exist
+                let demoUser = users.find(u => u.email === 'demo@example.com');
+                
+                if (!demoUser) {
+                    demoUser = {
+                        id: 999,
+                        name: 'Demo User',
+                        email: 'demo@example.com',
+                        password: 'password'
+                    };
+                    users.push(demoUser);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Initialize demo expenses
+                    const demoExpenses = [
+                        { id: 1, date: '2024-01-15', description: 'Grocery Shopping', category: 'Food', amount: 156.78 },
+                        { id: 2, date: '2024-01-16', description: 'Uber Ride', category: 'Transport', amount: 24.50 },
+                        { id: 3, date: '2024-01-17', description: 'Netflix', category: 'Entertainment', amount: 15.99 }
+                    ];
+                    localStorage.setItem(`expenses_${demoUser.id}`, JSON.stringify(demoExpenses));
+                }
+                
+                localStorage.setItem('user', JSON.stringify(demoUser));
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            
+            // Check registered users
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                localStorage.setItem('user', JSON.stringify(user));
+                window.location.href = 'dashboard.html';
+            } else {
+                document.getElementById('errorMessage').textContent = 'Invalid credentials';
+                document.getElementById('errorAlert').style.display = 'flex';
+            }
+        });
+
+        if (localStorage.getItem('user')) {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

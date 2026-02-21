@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpenseTracker - Smart Financial Management</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-chart-line"></i>
+                ExpenseTracker
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="pages/dashboard.html">Dashboard</a></li>
+                <li><a href="pages/expenses.html">Expenses</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+            </ul>
+            <div class="flex items-center gap-2">
+                <a href="pages/login.html" class="btn btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </a>
+                <a href="pages/signup.html" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    Sign Up
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section style="background: linear-gradient(135deg, var(--primary-50) 0%, white 100%); padding: 4rem 0;">
+            <div class="container">
+                <div style="max-width: 600px;">
+                    <h1 style="font-size: 3rem; margin-bottom: 1.5rem; line-height: 1.2;">
+                        Take Control of Your<br>
+                        <span style="color: var(--primary-600);">Financial Future</span>
+                    </h1>
+                    <p style="font-size: 1.25rem; color: var(--gray-600); margin-bottom: 2rem;">
+                        Smart expense tracking, insightful analytics, and better financial decisions. 
+                        Join thousands of users who've transformed their money management.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="pages/signup.html" class="btn btn-primary btn-lg">
+                            <i class="fas fa-rocket"></i>
+                            Get Started Free
+                        </a>
+                        <a href="#features" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-play"></i>
+                            Watch Demo
+                        </a>
+                    </div>
+                    <div class="flex gap-6 mt-4">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+                            <span class="text-sm text-gray">No credit card required</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+                            <span class="text-sm text-gray">14-day free trial</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" style="padding: 5rem 0;">
+            <div class="container">
+                <div style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">
+                    <h2 style="margin-bottom: 1rem;">Everything You Need to Manage Expenses</h2>
+                    <p style="color: var(--gray-600);">Powerful features to help you track, analyze, and optimize your spending.</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="stat-icon" style="margin-bottom: 1rem;">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h3 style="margin-bottom: 0.5rem;">Easy Tracking</h3>
+                            <p style="color: var(--gray-600);">Add expenses in seconds with our intuitive interface. Categorize and tag transactions effortlessly.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="stat-icon" style="margin-bottom: 1rem;">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h3 style="margin-bottom: 0.5rem;">Visual Insights</h3>
+                            <p style="color: var(--gray-600);">Beautiful charts and reports that help you understand your spending patterns at a glance.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="stat-icon" style="margin-bottom: 1rem;">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3 style="margin-bottom: 0.5rem;">Smart Alerts</h3>
+                            <p style="color: var(--gray-600);">Get notified when you're nearing your budget limits or when bills are due.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="stat-icon" style="margin-bottom: 1rem;">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <h3 style="margin-bottom: 0.5rem;">Receipt Scanning</h3>
+                            <p style="color: var(--gray-600);">Simply snap a photo of your receipt and let our AI extract the data automatically.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="stat-icon" style="margin-bottom: 1rem;">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 style="margin-bottom: 0.5rem;">Bank-Level Security</h3>
+                            <p style="color: var(--gray-600);">Your financial data is encrypted and protected with enterprise-grade security.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="stat-icon" style="margin-bottom: 1rem;">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h3 style="margin-bottom: 0.5rem;">Auto-Categorization</h3>
+                            <p style="color: var(--gray-600);">Our smart system automatically categorizes your expenses based on merchant data.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="background: white; border-top: 1px solid var(--gray-200); padding: 3rem 0;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+                <div>
+                    <div class="logo" style="margin-bottom: 1rem;">
+                        <i class="fas fa-chart-line"></i>
+                        ExpenseTracker
+                    </div>
+                    <p style="color: var(--gray-500); font-size: 0.875rem;">Smart financial management for everyone.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1rem;">Product</h4>
+                    <ul style="list-style: none;">
+                        <li><a href="#" style="color: var(--gray-500); text-decoration: none; font-size: 0.875rem;">Features</a></li>
+                        <li><a href="#" style="color: var(--gray-500); text-decoration: none; font-size: 0.875rem;">Pricing</a></li>
+                        <li><a href="#" style="color: var(--gray-500); text-decoration: none; font-size: 0.875rem;">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1rem;">Company</h4>
+                    <ul style="list-style: none;">
+                        <li><a href="#" style="color: var(--gray-500); text-decoration: none; font-size: 0.875rem;">About</a></li>
+                        <li><a href="#" style="color: var(--gray-500); text-decoration: none; font-size: 0.875rem;">Blog</a></li>
+                        <li><a href="#" style="color: var(--gray-500); text-decoration: none; font-size: 0.875rem;">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1rem;">Legal</h4>
+                    <ul style="list-style: none;">
+                        <li><a href="#" style="color: var(--gray-500); text-decoration: none; font-size: 0.875rem;">Privacy</a></li>
+                        <li><a href="#" style="color: var(--gray-500); text-decoration: none; font-size: 0.875rem;">Terms</a></li>
+                        <li><a href="#" style="color: var(--gray-500); text-decoration: none; font-size: 0.875rem;">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <p style="color: var(--gray-500); font-size: 0.875rem;">&copy; 2026 ExpenseTracker. All rights reserved.</p>
+                <div class="flex gap-2">
+                    <a href="#" class="btn-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="btn-icon"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="btn-icon"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

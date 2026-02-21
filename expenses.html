@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses - ExpenseTracker</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-chart-line"></i>
+                ExpenseTracker
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="expenses.html" class="active">Expenses</a></li>
+            </ul>
+            <div class="flex items-center gap-4" id="navButtons"></div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding: 2rem 0;">
+        <div class="flex items-center justify-between mb-6">
+            <h1>My Expenses</h1>
+            <button class="btn btn-primary" onclick="openModal()">
+                <i class="fas fa-plus"></i>
+                Add Expense
+            </button>
+        </div>
+
+        <div class="filters-bar">
+            <input type="text" id="searchInput" placeholder="Search..." class="form-control" style="width: 200px;" onkeyup="filterExpenses()">
+            <select id="filterCategory" class="filter-select" onchange="filterExpenses()">
+                <option value="">All Categories</option>
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Bills">Bills</option>
+            </select>
+            <select id="sortBy" class="filter-select" onchange="filterExpenses()">
+                <option value="date-desc">Newest First</option>
+                <option value="date-asc">Oldest First</option>
+                <option value="amount-desc">Highest Amount</option>
+                <option value="amount-asc">Lowest Amount</option>
+            </select>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expensesTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="expenseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add Expense</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="expenseForm">
+                    <div class="form-group">
+                        <label>Amount ($)</label>
+                        <input type="number" id="amount" class="form-control" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="category" class="form-control" required>
+                            <option value="Food">Food</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Bills">Bills</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="description" class="form-control" required>
+                    </div>
+                    <input type="hidden" id="expenseId">
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Save Expense</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/utils.js"></script>
+    <script>
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) window.location.href = 'login.html';
+
+        document.getElementById('navButtons').innerHTML = `
+            <span class="text-sm">${user.name}</span>
+            <button onclick="logout()" class="btn btn-secondary btn-sm">Logout</button>
+        `;
+
+        // Load ONLY this user's expenses
+        let expenses = JSON.parse(localStorage.getItem(`expenses_${user.id}`)) || [];
+        let filteredExpenses = [...expenses];
+
+        function saveExpenses() {
+            localStorage.setItem(`expenses_${user.id}`, JSON.stringify(expenses));
+        }
+
+        function renderExpenses() {
+            const tbody = document.getElementById('expensesTable');
+            if (filteredExpenses.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No expenses yet. Click "Add Expense" to start!</td></tr>';
+                return;
+            }
+            tbody.innerHTML = filteredExpenses.map(e => `
+                <tr>
+                    <td>${new Date(e.date).toLocaleDateString()}</td>
+                    <td>${e.description}</td>
+                    <td><span class="badge">${e.category}</span></td>
+                    <td>$${e.amount.toFixed(2)}</td>
+                    <td>
+                        <button onclick="editExpense(${e.id})" class="btn-action"><i class="fas fa-edit"></i></button>
+                        <button onclick="deleteExpense(${e.id})" class="btn-action"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterExpenses() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('filterCategory').value;
+            const sortBy = document.getElementById('sortBy').value;
+            
+            filteredExpenses = expenses.filter(e => 
+                (e.description.toLowerCase().includes(search) || e.category.toLowerCase().includes(search)) &&
+                (!category || e.category === category)
+            );
+            
+            filteredExpenses.sort((a, b) => {
+                if (sortBy === 'date-desc') return new Date(b.date) - new Date(a.date);
+                if (sortBy === 'date-asc') return new Date(a.date) - new Date(b.date);
+                if (sortBy === 'amount-desc') return b.amount - a.amount;
+                if (sortBy === 'amount-asc') return a.amount - b.amount;
+            });
+            
+            renderExpenses();
+        }
+
+        function openModal() {
+            document.getElementById('modalTitle').textContent = 'Add Expense';
+            document.getElementById('expenseForm').reset();
+            document.getElementById('expenseId').value = '';
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('expenseModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('expenseModal').classList.remove('show');
+        }
+
+        function editExpense(id) {
+            const expense = expenses.find(e => e.id === id);
+            if (expense) {
+                document.getElementById('modalTitle').textContent = 'Edit Expense';
+                document.getElementById('expenseId').value = expense.id;
+                document.getElementById('amount').value = expense.amount;
+                document.getElementById('category').value = expense.category;
+                document.getElementById('date').value = expense.date;
+                document.getElementById('description').value = expense.description;
+                document.getElementById('expenseModal').classList.add('show');
+            }
+        }
+
+        function deleteExpense(id) {
+            if (confirm('Delete this expense?')) {
+                expenses = expenses.filter(e => e.id !== id);
+                saveExpenses();
+                filterExpenses();
+            }
+        }
+
+        document.getElementById('expenseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('expenseId').value || Date.now();
+            const expense = {
+                id: id,
+                amount: parseFloat(document.getElementById('amount').value),
+                category: document.getElementById('category').value,
+                date: document.getElementById('date').value,
+                description: document.getElementById('description').value
+            };
+            
+            if (document.getElementById('expenseId').value) {
+                const index = expenses.findIndex(e => e.id == id);
+                expenses[index] = expense;
+            } else {
+                expenses.push(expense);
+            }
+            
+            saveExpenses();
+            closeModal();
+            filterExpenses();
+        });
+
+        renderExpenses();
+    </script>
+</body>
+</html>
